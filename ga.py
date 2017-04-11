@@ -12,20 +12,25 @@ class pop_member:
 
 class Life:
     def __init__(self):
+        # Parameters for the genetic algorithm
         self.pop_size = 1000;
         self.mutation_rate = 0.03;
         self.num_gens = 10
+
         self.population = [None] * self.pop_size
         self.mating_pool = list()
 
     def random_population(self):
+        # initial population (initialized all with length between 2 and 10)
         for i in range(self.pop_size):
             length = random.randint(2, 10)
             self.population[i] = pop_member()
 
     def evaluate_fitness(self, code_string, input = None):
-        end = len(code_string)
+        # Determine fitness of a population member
 
+        # First, sanitize the code string. That is, make sure openign and closing brackets match
+        end = len(code_string)
         while 1:
             try:
                 prepare_code(code_string)
@@ -37,7 +42,8 @@ class Life:
                 code_string = code_string[:end]
         # print("Evaluating: ", code_string)
 
-        evaluate_code(read(code_string))
+        # Call to interpreter
+        evaluate_code(read(code_string)) # This takes input from 'input.txt' stores the result in 'output.txt'
 
         result = open('output.txt', 'r').read()
 
@@ -48,6 +54,7 @@ class Life:
 
         desired_result = open('desired.txt', 'r').read()
 
+        # Compute fitness (Here, the aim is to print a known string so the fitness fucction is based on the goal.)
         for i, j in zip(range(len(result)), range(len(desired_result))):
             # print('comparing: ', result[i], 'with', desired_result[j])
             fitness += 256 - math.fabs(ord(result[i]) - ord(desired_result[j]))
@@ -71,15 +78,16 @@ class Life:
         # print(len(self.mating_pool))
 
     def mate(self):
+        # Randomly select 2 individuals from the mating pool
         for i in range(self.pop_size):
             mom_genome = self.mating_pool[random.randint(0, len(self.mating_pool))]
             dad_genome = self.mating_pool[random.randint(0, len(self.mating_pool))]
 
             child_genome = self.crossover(mom_genome, dad_genome) # Mating
 
-            child_genome = self.mutate(child_genome)
+            child_genome = self.mutate(child_genome) # Add mutation
 
-            self.population[i] = child_genome
+            self.population[i] = child_genome # Add the child to the next generation population
 
     def mutate(self, gene): # Mutate strlen and str with prob = mutation rate
         return gene
