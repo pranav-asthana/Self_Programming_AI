@@ -2,6 +2,8 @@ from brainfuck_me import *
 import math
 import random
 
+mean_fitness_list = list()
+
 def evaluate_fitness(code_string, input = None):
     # Determine fitness of a population member
 
@@ -94,6 +96,8 @@ class Life:
         print("max fitness = ", max_fitness)
         print("mean fitness = ", mean_fitness)
 
+        mean_fitness_list.append(mean_fitness)
+
         for i in range(self.pop_size):
             fitness_normal = fitnesses[i] / max_fitness; # Normalize fitness between 0 and 1
             n = int(fitness_normal * 100);  # Arbitrary multiplier
@@ -137,7 +141,7 @@ def main():
             if life.population[i].fitness > best_fitness:
                 best_fitness = life.population[i].fitness
                 best_code = life.population[i].code
-                print(best_code)
+                print("So far best: ", best_code)
             # print('fitness: ', life.fitness[i])
             # print('--------------------------------------------')
 
