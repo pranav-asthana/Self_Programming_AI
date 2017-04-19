@@ -87,10 +87,11 @@ def eval_step(code, data, code_pos, data_pos, input_file = stdin, out = stdout, 
                 return (data, None, data_pos, step, loop_count)
     return (data, code_pos, data_pos, step, loop_count)
 
-def evaluate_code(code, data=[0 for i in range(10000000)], c_pos=0, d_pos=0):
+def evaluate_code(code, data=None, c_pos=0, d_pos=0):
     input_file = open('input.txt', 'r')
     output_file = open('output.txt', 'w')
     loop_count = 0
+    data = [0 for i in range(100000)]
     while c_pos < len(code):
         (data, c_pos, d_pos, step, loop_count) = eval_step(code, data, c_pos, d_pos, input_file, output_file, loop_count)
         if c_pos == None:

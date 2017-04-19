@@ -39,6 +39,11 @@ def evaluate_fitness(code_string, input = None):
         fitness += 256 - math.fabs(ord(result[i]) - ord(desired_result[i]))
 
     # print('Fitness: ', fitness)
+    if fitness == 512: # only for hi (any 2 letter goal)
+        print("Perfect code: ", code_string)
+        import sys
+        sys.exit(0)
+
 
     return fitness
 
@@ -133,9 +138,9 @@ class Life:
     def __init__(self):
         # Parameters for the genetic algorithm
         self.pop_size = 1000
-        self.mutation_rate = 0.05
         self.crossover_rate = 0.8
-        self.num_gens = 30
+        self.num_gens = 5000
+        self.mutation_rate = 0.05 # * (1 - (self.num_gens/5000))
 
         self.population = [None] * self.pop_size
         self.mating_pool = list()
@@ -214,9 +219,12 @@ def main():
 
     best_fitness = 0
     best_code = ''
-
-    for gen in range(life.num_gens):
+    gen = 0
+    # for gen in range(life.num_gens):
+    while life.num_gens > 0:
         print('Gen: ', gen)
+        gen += 1
+        life.num_gens -= 1
         for i in range(life.pop_size):
             # print('code: ', life.population[i][0])
             life.population[i].fitness = evaluate_fitness(life.population[i].code)
