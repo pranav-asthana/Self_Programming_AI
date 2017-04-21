@@ -39,8 +39,9 @@ def evaluate_fitness(code_string, input = None):
         fitness += 256 - math.fabs(ord(result[i]) - ord(desired_result[i]))
 
     # print('Fitness: ', fitness)
-    if fitness == 512: # only for hi (any 2 letter goal)
+    if fitness == 256*len(desired_result):
         print("Perfect code: ", code_string)
+        plot_stats()
         import sys
         sys.exit(0)
 
@@ -203,6 +204,7 @@ def plot_stats():
     import numpy as np
     l = len(mean_fitness_list)
     x = np.linspace(0, l-1, l)
+    plt.plot(x, [256*len(open('desired.txt', 'r').read())]*l)
     plt.plot(x, mean_fitness_list)
     plt.plot(x, max_fitness_list)
     plt.show()
@@ -221,7 +223,7 @@ def main():
     best_code = ''
     gen = 0
     # for gen in range(life.num_gens):
-    while life.num_gens > 0:
+    while 1:# life.num_gens > 0:
         print('Gen: ', gen)
         gen += 1
         life.num_gens -= 1
@@ -241,5 +243,6 @@ def main():
     plot_stats()
 
 if __name__ == '__main__':
-    import cProfile
-    cProfile.run('main()')
+    # import cProfile
+    # cProfile.run('main()')
+    main()
