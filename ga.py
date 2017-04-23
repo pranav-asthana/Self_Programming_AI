@@ -150,7 +150,6 @@ class Life:
     def random_population(self):
         # initial population (initialized all with length between 2 and 10)
         for i in range(self.pop_size):
-            length = random.randint(2, 10)
             self.population[i] = pop_member()
 
     def select(self): # Roulette wheel selection
@@ -180,7 +179,7 @@ class Life:
         new_population = [None] * size
 
         if self.elitism:
-            self.population.sort()
+            self.population.sort(key = lambda x : x.fitness)
             new_population.append(self.population[-1])
             new_population.append(self.population[-2])
             size -= 2
