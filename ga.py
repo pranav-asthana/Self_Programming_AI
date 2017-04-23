@@ -142,6 +142,7 @@ class Life:
         self.crossover_rate = 0.8
         self.num_gens = 5000
         self.mutation_rate = 0.05 # * (1 - (self.num_gens/5000))
+        self.elitism = True
 
         self.population = [None] * self.pop_size
         self.mating_pool = list()
@@ -175,9 +176,17 @@ class Life:
 
     def mate(self):
         # Randomly select 2 individuals from the mating pool
-        new_population = [None] * self.pop_size
+        size = self.pop_size
+        new_population = [None] * size
+
+        if self.elitism:
+            self.population.sort()
+            new_population.append(self.population[-1])
+            new_population.append(self.population[-2])
+            size -= 2
+
         i = 0
-        while i < self.pop_size:
+        while i < size:
             mom_genome = self.mating_pool[random.randint(0, len(self.mating_pool) - 1)]
             dad_genome = self.mating_pool[random.randint(0, len(self.mating_pool) - 1)]
 
