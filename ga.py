@@ -153,6 +153,7 @@ class Life:
             self.population[i] = pop_member()
 
     def select(self): # Roulette wheel selection
+        self.mating_pool = list()
         fitnesses = [self.population[i].fitness for i in range(self.pop_size)]
         # print(fitnesses)
         max_fitness = max(fitnesses)
@@ -180,11 +181,10 @@ class Life:
 
         if self.elitism:
             self.population.sort(key = lambda x : x.fitness)
-            new_population.append(self.population[-1])
-            new_population.append(self.population[-2])
-            size -= 2
+            new_population[0] = self.population[-1]
+            new_population[1] = self.population[-2]
 
-        i = 0
+        i = 2
         while i < size:
             mom_genome = self.mating_pool[random.randint(0, len(self.mating_pool) - 1)]
             dad_genome = self.mating_pool[random.randint(0, len(self.mating_pool) - 1)]
